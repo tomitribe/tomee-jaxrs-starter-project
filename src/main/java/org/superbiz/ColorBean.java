@@ -37,6 +37,12 @@ public class ColorBean {
         return color;
     }
 
+    @Path("favorite")
+    @GET
+    public String getFavoriteColor() {
+        return "orange";
+    }
+
     @Path("{color}")
     @POST
     public void setColor(@PathParam("color") String color) {

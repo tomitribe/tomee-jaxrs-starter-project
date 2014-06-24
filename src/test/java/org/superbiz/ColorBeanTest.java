@@ -32,14 +32,43 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * Arquillian will start the container, deploy all @Deployment bundles, then run all the @Test methods.
+ *
+ * A strong value-add for Arquillian is that the test is abstracted from the server.
+ * It is possible to rerun the same test against multiple adapters or server configurations.
+ *
+ * A second value-add is it is possible to build WebArchives that are slim and trim and therefore
+ * isolate the functionality being tested.  This also makes it easier to swap out one implementation
+ * of a class for another allowing for easy mocking.
+ *
+ */
 @RunWith(Arquillian.class)
 public class ColorBeanTest extends Assert {
 
+    /**
+     * ShrinkWrap is used to create a war file on the fly.
+     *
+     * The API is quite expressive and can build any possible
+     * flavor of war file.  It can quite easily return a rebuilt
+     * war file as well.
+     *
+     * More than one @Deployment method is allowed.
+     */
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class).addClass(ColorBean.class);
     }
 
+    /**
+     * This URL will contain the following URL data
+     *
+     *  - http://<host>:<port>/<webapp>/
+     *
+     * This allows the test itself to be agnostic of server information or even
+     * the name of the webapp
+     *
+     */
     @ArquillianResource
     private URL webappUrl;
 
@@ -47,10 +76,9 @@ public class ColorBeanTest extends Assert {
     @Test
     public void postAndGet() throws Exception {
 
-        final WebClient webClient = WebClient.create(webappUrl.toURI());
-
         // POST
         {
+            final WebClient webClient = WebClient.create(webappUrl.toURI());
             final Response response = webClient.path("color/green").post(null);
 
             assertEquals(204, response.getStatus());
@@ -58,6 +86,7 @@ public class ColorBeanTest extends Assert {
 
         // GET
         {
+            final WebClient webClient = WebClient.create(webappUrl.toURI());
             final Response response = webClient.path("color").get();
 
             assertEquals(200, response.getStatus());
@@ -69,13 +98,21 @@ public class ColorBeanTest extends Assert {
 
     }
 
+    @Test
+    public void getFavorite() throws Exception {
+        final WebClient webClient = WebClient.create(webappUrl.toURI());
+        final Response response = webClient.path("color/favorite").get();
+
+        assertEquals(200, response.getStatus());
+
+        final String content = slurp((InputStream) response.getEntity());
+
+        assertEquals("orange", content);
+    }
+
     /**
      * Reusable utility method
      * Move to a shared class or replace with equivalent
-     *
-     * @param in
-     * @return
-     * @throws IOException
      */
     public static String slurp(final InputStream in) throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
