@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,7 +45,7 @@ import java.net.URL;
  *
  */
 @RunWith(Arquillian.class)
-public class ColorBeanTest extends Assert {
+public class ColorServiceTest extends Assert {
 
     /**
      * ShrinkWrap is used to create a war file on the fly.
@@ -57,7 +58,7 @@ public class ColorBeanTest extends Assert {
      */
     @Deployment
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class).addClass(ColorBean.class);
+        return ShrinkWrap.create(WebArchive.class).addClasses(ColorService.class, Color.class);
     }
 
     /**
@@ -99,15 +100,18 @@ public class ColorBeanTest extends Assert {
     }
 
     @Test
-    public void getFavorite() throws Exception {
+    public void getColorObject() throws Exception {
+
         final WebClient webClient = WebClient.create(webappUrl.toURI());
-        final Response response = webClient.path("color/favorite").get();
+        webClient.accept(MediaType.APPLICATION_JSON);
 
-        assertEquals(200, response.getStatus());
+        final Color color = webClient.path("color/object").get(Color.class);
 
-        final String content = slurp((InputStream) response.getEntity());
-
-        assertEquals("orange", content);
+        assertNotNull(color);
+        assertEquals("orange", color.getName());
+        assertEquals(0xE7, color.getR());
+        assertEquals(0x71, color.getG());
+        assertEquals(0x00, color.getB());
     }
 
     /**

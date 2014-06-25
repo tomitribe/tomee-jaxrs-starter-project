@@ -21,14 +21,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/color")
 @Singleton
-public class ColorBean {
+public class ColorService {
 
     private String color;
 
-    public ColorBean() {
+    public ColorService() {
         this.color = "white";
     }
 
@@ -37,15 +40,16 @@ public class ColorBean {
         return color;
     }
 
-    @Path("favorite")
-    @GET
-    public String getFavoriteColor() {
-        return "orange";
-    }
-
     @Path("{color}")
     @POST
     public void setColor(@PathParam("color") String color) {
         this.color = color;
+    }
+
+    @Path("object")
+    @GET
+    @Produces({ APPLICATION_JSON })
+    public Color getColorObject() {
+        return new Color("orange", 0xE7, 0x71, 0x00);
     }
 }
