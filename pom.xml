@@ -30,25 +30,25 @@
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>6.0-5</version>
+      <version>6.0-6</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>arquillian-tomee-embedded</artifactId>
-      <version>1.6.0.2</version>
+      <version>1.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>openejb-cxf-rs</artifactId>
-      <version>4.6.0.2</version>
+      <version>4.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
       <artifactId>tomee-jaxrs</artifactId>
-      <version>1.6.0.2</version>
+      <version>1.7.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -88,9 +88,9 @@
       <plugin>
         <groupId>org.apache.openejb.maven</groupId>
         <artifactId>tomee-maven-plugin</artifactId>
-        <version>1.6.0.2</version>
+        <version>1.7.0</version>
         <configuration>
-          <tomeeVersion>1.6.0.2</tomeeVersion>
+          <tomeeVersion>1.7.0</tomeeVersion>
           <tomeeClassifier>jaxrs</tomeeClassifier>
         </configuration>
       </plugin>
