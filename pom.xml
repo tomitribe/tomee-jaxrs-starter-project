@@ -41,12 +41,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
-      <artifactId>openejb-cxf-rs</artifactId>
-      <version>${openejb.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
       <artifactId>tomee-jaxrs</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
@@ -73,18 +67,9 @@
     </plugins>
   </build>
 
-  <repositories>
-    <repository>
-      <id>apache-snapshot</id>
-      <name>Apache Snapshot Repository</name>
-      <url>https://repository.apache.org/content/groups/snapshots/</url>
-    </repository>
-  </repositories>
-
   <properties>
     <tomee.version>1.7.1</tomee.version>
     <openejb.javaee.api>6.0-6</openejb.javaee.api>
-    <openejb.version>4.7.1</openejb.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.target>1.7</maven.compiler.target>
