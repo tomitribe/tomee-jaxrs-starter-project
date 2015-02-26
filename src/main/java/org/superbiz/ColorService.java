@@ -16,6 +16,7 @@
  */
 package org.superbiz;
 
+import javax.ejb.Lock;
 import javax.ejb.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,10 +24,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import static javax.ejb.LockType.READ;
+import static javax.ejb.LockType.WRITE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/color")
+@Lock(READ)
 @Singleton
+@Path("/color")
 public class ColorService {
 
     private String color;
@@ -40,6 +44,7 @@ public class ColorService {
         return color;
     }
 
+    @Lock(WRITE)
     @Path("{color}")
     @POST
     public void setColor(@PathParam("color") String color) {
@@ -48,7 +53,7 @@ public class ColorService {
 
     @Path("object")
     @GET
-    @Produces({ APPLICATION_JSON })
+    @Produces({APPLICATION_JSON})
     public Color getColorObject() {
         return new Color("orange", 0xE7, 0x71, 0x00);
     }
