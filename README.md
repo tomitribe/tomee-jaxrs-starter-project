@@ -14,3 +14,11 @@ Everything ready-to-run with a simple `maven clean install tomee:run`
 Delete the sample code, replace with your own and you're good to go.
 
 Have time for some reading and curious on how everything works?  [Read here](http://www.tomitribe.com/blog/2014/06/apache-tomee-jax-rs-and-arquillian-starter-project/).
+
+# Run on heroku
+
+Once checkouted and heroku setup locally (heroku login) just go in the project folder and execute:
+
+    heroku create
+    git push heroku master
+
