@@ -20,7 +20,7 @@ Have time for some reading and curious on how everything works?  [Read here](htt
 Once checkouted and heroku setup locally (heroku login) just go in the project folder and execute:
 
     heroku create
-    git push heroku master
+    git push heroku heroku:master
 
 At the end of the push command you'll get the heroku base URL, just append /color/object and you'll
 touch the JAX6RS service of the application.
