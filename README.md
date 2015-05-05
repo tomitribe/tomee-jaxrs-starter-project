@@ -25,3 +25,6 @@ Once checkouted and heroku setup locally (heroku login) just go in the project f
 At the end of the push command you'll get the heroku base URL, just append /color/object and you'll
 touch the JAX6RS service of the application.
 
+Note: for this sample we specified `-Dopenejb.additional.include=tomee-`. This is because by default
+TomEE excludes "tomee-*" modules but our project is named "tomee-jaxrs-starter-project".
+
