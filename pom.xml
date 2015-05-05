@@ -35,13 +35,12 @@
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
-      <artifactId>arquillian-tomee-embedded</artifactId>
+      <artifactId>tomee-embedded</artifactId>
       <version>${tomee.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
-      <artifactId>tomee-jaxrs</artifactId>
+      <artifactId>arquillian-tomee-embedded</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
     </dependency>
@@ -59,20 +58,35 @@
         <groupId>org.apache.openejb.maven</groupId>
         <artifactId>tomee-maven-plugin</artifactId>
         <version>${tomee.version}</version>
-        <configuration>
-          <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
-        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.9</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals><goal>copy-dependencies</goal></goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
 
   <properties>
-    <tomee.version>1.7.1</tomee.version>
-    <openejb.javaee.api>6.0-6</openejb.javaee.api>
+    <tomee.version>2.0.0-SNAPSHOT</tomee.version>
+    <openejb.javaee.api>7.0-SNAPSHOT</openejb.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>apache-snapshots</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
 </project>
