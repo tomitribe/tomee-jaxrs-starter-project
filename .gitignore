@@ -49,3 +49,5 @@ pom.xml.versionsBackup
 release.properties
 target/
 tmp/
+build/
+gradle/
