@@ -50,4 +50,3 @@ release.properties
 target/
 tmp/
 build/
-gradle/

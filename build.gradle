@@ -3,13 +3,14 @@ apply plugin: 'war'
 group = 'org.superbiz'
 version = '1.0-SNAPSHOT'
 
-description = "Apache TomEE JAXRS Starter Project"
+description = "TomEE JAXRS starter project"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+
 repositories {
-    mavenCentral()
+	mavenCentral()        
 }
 
 dependencies {
