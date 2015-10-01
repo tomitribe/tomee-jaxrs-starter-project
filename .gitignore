@@ -4,7 +4,6 @@
 *.iml
 *.ipr
 *.iws
-*.jar
 *.launch
 *.pydevproject
 *.swp
