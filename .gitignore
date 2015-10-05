@@ -4,7 +4,6 @@
 *.iml
 *.ipr
 *.iws
-*.jar
 *.launch
 *.pydevproject
 *.swp
@@ -49,3 +48,4 @@ pom.xml.versionsBackup
 release.properties
 target/
 tmp/
+build/
