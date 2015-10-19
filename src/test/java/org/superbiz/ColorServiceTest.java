@@ -16,22 +16,16 @@
  */
 package org.superbiz;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import com.github.cchacin.cucumber.steps.RestSteps;
+
+import cucumber.runtime.arquillian.ArquillianCucumber;
+import cucumber.runtime.arquillian.api.Features;
+import cucumber.runtime.arquillian.api.Glues;
 
 /**
  * Arquillian will start the container, deploy all @Deployment bundles, then run all the @Test methods.
@@ -44,8 +38,10 @@ import java.net.URL;
  * of a class for another allowing for easy mocking.
  *
  */
-@RunWith(Arquillian.class)
-public class ColorServiceTest extends Assert {
+@Glues({RestSteps.class})
+@Features({"features/colorservice.feature"})
+@RunWith(ArquillianCucumber.class)
+public class ColorServiceTest {
 
     /**
      * ShrinkWrap is used to create a war file on the fly.
@@ -58,75 +54,6 @@ public class ColorServiceTest extends Assert {
      */
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class).addClasses(ColorService.class, Color.class);
+        return ShrinkWrap.create(WebArchive.class, "test-app.war").addClasses(ColorService.class, Color.class);
     }
-
-    /**
-     * This URL will contain the following URL data
-     *
-     *  - http://<host>:<port>/<webapp>/
-     *
-     * This allows the test itself to be agnostic of server information or even
-     * the name of the webapp
-     *
-     */
-    @ArquillianResource
-    private URL webappUrl;
-
-
-    @Test
-    public void postAndGet() throws Exception {
-
-        // POST
-        {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color/green").post(null);
-
-            assertEquals(204, response.getStatus());
-        }
-
-        // GET
-        {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color").get();
-
-            assertEquals(200, response.getStatus());
-
-            final String content = slurp((InputStream) response.getEntity());
-
-            assertEquals("green", content);
-        }
-
-    }
-
-    @Test
-    public void getColorObject() throws Exception {
-
-        final WebClient webClient = WebClient.create(webappUrl.toURI());
-        webClient.accept(MediaType.APPLICATION_JSON);
-
-        final Color color = webClient.path("color/object").get(Color.class);
-
-        assertNotNull(color);
-        assertEquals("orange", color.getName());
-        assertEquals(0xE7, color.getR());
-        assertEquals(0x71, color.getG());
-        assertEquals(0x00, color.getB());
-    }
-
-    /**
-     * Reusable utility method
-     * Move to a shared class or replace with equivalent
-     */
-    public static String slurp(final InputStream in) throws IOException {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[1024];
-        int length;
-        while ((length = in.read(buffer)) != -1) {
-            out.write(buffer, 0, length);
-        }
-        out.flush();
-        return new String(out.toByteArray());
-    }
-
 }
