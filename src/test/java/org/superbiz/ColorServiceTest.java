@@ -56,7 +56,7 @@ public class ColorServiceTest extends Assert {
      *
      * More than one @Deployment method is allowed.
      */
-    @Deployment
+    @Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class).addClasses(ColorService.class, Color.class);
     }
