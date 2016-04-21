@@ -49,3 +49,4 @@ release.properties
 target/
 tmp/
 build/
+.gradletasknamecache
