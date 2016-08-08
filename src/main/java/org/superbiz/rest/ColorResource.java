@@ -14,10 +14,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz;
+package org.superbiz.rest;
+
+import org.superbiz.model.Color;
+import org.superbiz.services.api.ColorTransformService;
 
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -31,12 +35,20 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Lock(READ)
 @Singleton
 @Path("/color")
-public class ColorService {
+public class ColorResource {
 
     private String color;
 
-    public ColorService() {
+    private final ColorTransformService colorTransformService;
+
+    public ColorResource(){
+        this(null);
+    }
+
+    @Inject
+    public ColorResource( ColorTransformService colorTransformService) {
         this.color = "white";
+        this.colorTransformService = colorTransformService;
     }
 
     @GET
@@ -56,5 +68,12 @@ public class ColorService {
     @Produces({APPLICATION_JSON})
     public Color getColorObject() {
         return new Color("orange", 0xE7, 0x71, 0x00);
+    }
+
+    @Path("transform/object")
+    @GET
+    @Produces({APPLICATION_JSON})
+    public Color getTransformedColorObject() {
+        return colorTransformService.toCMYK(new Color("orange", 0xE7, 0x71, 0x00));
     }
 }
