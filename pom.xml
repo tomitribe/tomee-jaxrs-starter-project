@@ -21,29 +21,29 @@
 
   <!-- Change: groupId, artifactId, version -->
   <groupId>org.superbiz</groupId>
-  <artifactId>tomee-rest-arquillian</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>tomee-jaxrs-starter-project</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
 
   <packaging>war</packaging>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>${arquillian.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>${openejb.javaee.api}</version>
+      <version>${tomee.javaee.api}</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>arquillian-tomee-embedded</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>tomee-jaxrs</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -51,28 +51,89 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomee</groupId>
+      <artifactId>arquillian-tomee-embedded</artifactId>
+      <version>${tomee.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- To use the TomEE remote adapter, enable all remaining dependencies in place of the previous one -->
+    <!-- NOTE geronimo-osgi-locator required by JAX-RS client from CXF unless JAX-RS client jar proceeds Java EE API jar -->
+    <!-- NOTE JAX-RS JSON integration must be provided on client side, hence the johnzon dependency -->
+    <!--
+    <dependency>
+      <groupId>org.apache.tomee</groupId>
+      <artifactId>arquillian-tomee-remote</artifactId>
+      <version>${tomee.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-osgi-locator</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>${cxf.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.johnzon</groupId>
+      <artifactId>johnzon-jaxrs</artifactId>
+      <version>${johnzon.version}</version>
+      <scope>test</scope>
+    </dependency>
+    -->
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
-        <groupId>org.apache.openejb.maven</groupId>
+        <groupId>org.apache.tomee.maven</groupId>
         <artifactId>tomee-maven-plugin</artifactId>
         <version>${tomee.version}</version>
         <configuration>
           <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
+          <tomeeClassifier>${tomee.classifier}</tomeeClassifier>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <systemPropertyVariables>
+            <arquillian.launch>tomee.embedded</arquillian.launch>
+            <!--
+            <arquillian.launch>tomee.remote</arquillian.launch>
+            -->
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <properties>
-    <tomee.version>1.7.2</tomee.version>
-    <openejb.javaee.api>6.0-6</openejb.javaee.api>
+    <tomee.version>7.0.2</tomee.version>
+    <tomee.classifier>webprofile</tomee.classifier>
+    <tomee.javaee.api>7.0-1</tomee.javaee.api>
+    <cxf.version>3.1.8</cxf.version>
+    <johnzon.version>0.9.5</johnzon.version>
+    <arquillian.version>1.1.11.Final</arquillian.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 </project>

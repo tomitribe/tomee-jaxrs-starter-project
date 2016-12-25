@@ -1,16 +1,25 @@
-# Apache TomEE JAX-RS Starter Project
+= Apache TomEE JAX-RS Starter Project
+:uri-companion-blog-post: http://www.tomitribe.com/blog/2014/06/apache-tomee-jax-rs-and-arquillian-starter-project/
 
-Know JAX-RS, but haven't yet dug into Apache TomEE?  Way too busy or impatient to read documentation?  This repo is for you.
+Know JAX-RS, but haven't yet dug into Apache TomEE?
+Way too busy or impatient to read documentation?
+This repo is for you!
 
-The only thing better than a Maven archetype is a repo you can fork with everything already setup.  Skip the documentation and just fork-and-code.  This starter project contains:
+The only thing better than a Maven archetype is a repo you can fork with everything already setup.
+That's what you've got here.
+Skip the documentation and just fork-and-code.
 
- - 1 JAX-RS class, 1 JAXB class and 1 JUnit/Arquillian test
- - Maven pom for building a war file
- - Arquillian setup for testing against TomEE JAX-RS Embedded
+This starter project contains:
+
+ - 1 JAX-RS initiator class, 1 JAX-RS resource class, 1 JAXB class, and 1 Arquillian (JUnit) test
+ - Maven pom for running tests and building a war file
+ - Gradle build for running tests and building a war file
+ - Arquillian setup for testing against TomEE JAX-RS Embedded (or Remote)
  - TomEE Maven Plugin for deploying and running our war file
 
-Everything ready-to-run with a simple `maven clean install tomee:run`
+Everything ready-to-run with a simple `maven package tomee:run`.
+Then access the service at http://localhost:8080/tomee-jaxrs-starter-project/color (or any of the other JAX-RS resource paths).
 
 Delete the sample code, replace with your own and you're good to go.
 
-Have time for some reading and curious on how everything works?  [Read here](http://www.tomitribe.com/blog/2014/06/apache-tomee-jax-rs-and-arquillian-starter-project/).
+Have time for some reading and curious on how everything works?  Study {uri-companion-blog-post}[this blog post].

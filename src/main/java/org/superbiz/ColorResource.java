@@ -16,6 +16,7 @@
  */
 package org.superbiz;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
 import javax.ws.rs.GET;
@@ -31,13 +32,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Lock(READ)
 @Singleton
 @Path("/color")
-public class ColorService {
-
+public class ColorResource {
     private String color;
-
-    public ColorService() {
-        this.color = "white";
-    }
 
     @GET
     public String getColor() {
@@ -56,5 +52,10 @@ public class ColorService {
     @Produces({APPLICATION_JSON})
     public Color getColorObject() {
         return new Color("orange", 0xE7, 0x71, 0x00);
+    }
+
+    @PostConstruct
+    public void init() {
+        this.color = "white";
     }
 }
