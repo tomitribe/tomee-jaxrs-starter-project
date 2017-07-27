@@ -21,7 +21,7 @@
 
   <!-- Change: groupId, artifactId, version -->
   <groupId>org.superbiz</groupId>
-  <artifactId>tomee-rest-arquillian</artifactId>
+  <artifactId>hazelcast-test</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <packaging>war</packaging>
@@ -34,22 +34,17 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>arquillian-tomee-embedded</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>3.8.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.openejb</groupId>
-      <artifactId>tomee-jaxrs</artifactId>
+      <artifactId>apache-tomee</artifactId>
       <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
+      <type>zip</type>
+      <classifier>plus</classifier>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -61,18 +56,48 @@
         <version>${tomee.version}</version>
         <configuration>
           <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
+          <tomeeClassifier>plus</tomeeClassifier>
+          <config>${project.basedir}/src/main/tomee/conf</config>
+          <systemVariables>
+            <hazelcast.network.public-address>localhost</hazelcast.network.public-address>
+          </systemVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${plugin.version.docker}</version>
+        <configuration>
+          <imageName>docker-repo:5000/jgallimore/hztest</imageName>
+          <baseImage>docker-repo:5000/jgallimore/tomee-rpi-8-jre-1.7.4-plus</baseImage>
+          <exposes>
+            <expose>5701</expose>
+          </exposes>
+          <resources>
+            <resource>
+              <targetPath>/usr/local/tomee/webapps</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>${project.build.finalName}.war</include>
+            </resource>
+            <resource>
+              <targetPath>/usr/local/tomee/conf</targetPath>
+              <directory>${project.basedir}/src/main/tomee/conf</directory>
+              <include>**/*</include>
+            </resource>
+          </resources>
+          <cmd>["catalina.sh", "run"]</cmd>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <properties>
-    <tomee.version>1.7.2</tomee.version>
+    <tomee.version>1.7.4</tomee.version>
     <openejb.javaee.api>6.0-6</openejb.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
+    <plugin.version.docker>0.4.13</plugin.version.docker>
   </properties>
 </project>

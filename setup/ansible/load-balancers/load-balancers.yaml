@@ -1,0 +1,45 @@
+---
+- hosts: load-balancers
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: download haproxy
+    docker_image:
+      name: hypriot/rpi-haproxy
+      tag: latest
+
+  - name: create / verify conf dir exists
+    file: path=/usr/local/share/haproxy/ state=directory
+
+  - name: copy grom configuration
+    copy:
+      src: haproxy.cfg.grom
+      dest: /usr/local/share/haproxy/haproxy.cfg
+    when: inventory_hostname == "pi-grom-load-balancer"
+
+  - name: copy thrall configuration
+    copy:
+      src: haproxy.cfg.thrall
+      dest: /usr/local/share/haproxy/haproxy.cfg
+    when: inventory_hostname == "pi-thrall-load-balancer"
+
+  - name: copy main configuration
+    copy:
+      src: haproxy.cfg.main
+      dest: /usr/local/share/haproxy/haproxy.cfg
+    when: inventory_hostname == "pi-load-balancer"
+
+  - name: run haproxy
+    docker_container:
+      name: load-balancer
+      image: hypriot/rpi-haproxy
+      state: started
+      restart: yes
+      restart_policy: always
+      volumes: /usr/local/share/haproxy:/haproxy-override
+      published_ports:
+        - 80:80
+        - 5000:5000

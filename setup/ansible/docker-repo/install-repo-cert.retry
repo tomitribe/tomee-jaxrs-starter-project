@@ -1,0 +1,12 @@
+pi-client-01
+pi-client-02
+pi-client-03
+pi-grom-database
+pi-grom-load-balancer
+pi-grom-server-01
+pi-grom-server-02
+pi-load-balancer
+pi-thrall-database
+pi-thrall-load-balancer
+pi-thrall-server-01
+pi-thrall-server-02

@@ -1,0 +1,17 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: create / verify repo cert dir
+    file: 
+      path: "/etc/docker/certs.d/docker-repo:5000" 
+      state: directory
+
+  - name: copy cert
+    copy:
+      src: certs/docker-repo.crt
+      dest: "/etc/docker/certs.d/docker-repo:5000/ca.crt"

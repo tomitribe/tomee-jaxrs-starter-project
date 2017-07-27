@@ -1,0 +1,23 @@
+---
+- hosts: servers
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: run servers
+    docker_container:
+      name: server
+      dns_servers: 192.168.37.253
+      hostname: "{{metrics_hostname}}"
+      image: docker-repo:5000/jgallimore/hztest
+      state: started
+      restart: yes
+      restart_policy: always
+      pull: true
+      published_ports:
+        - 80:8080
+        - 5701:5701
+      env:
+          JAVA_OPTS: "-Xmx512m -Dhazelcast.network.public-address={{inventory_hostname}}"

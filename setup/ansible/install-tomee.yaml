@@ -1,0 +1,13 @@
+---
+- hosts: clients,servers
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: download tomee
+    docker_image:
+      name: docker-repo:5000/radcortez/rpi-tomee
+      tag: 8-jre-7.0.3-metrics
+      

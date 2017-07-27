@@ -1,0 +1,21 @@
+---
+- hosts: databases
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: run mysql
+    docker_container:
+      name: database
+      image: hypriot/rpi-mysql
+      state: started
+      restart_policy: always
+      published_ports:
+        - 3306:3306
+      env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: movie
+          MYSQL_USER: movie
+          MYSQL_PASSWORD: movie
