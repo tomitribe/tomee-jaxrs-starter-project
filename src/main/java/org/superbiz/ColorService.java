@@ -16,57 +16,45 @@
  */
 package org.superbiz;
 
-import org.superbiz.cluster.ClusterException;
-import org.superbiz.cluster.ClusterFactory;
-import org.superbiz.cluster.ClusterType;
-
-import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 import static javax.ejb.LockType.READ;
+import static javax.ejb.LockType.WRITE;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Lock(READ)
 @Singleton
-@Startup
-@Path("/test")
-public class TestService {
+@Path("/color")
+public class ColorService {
 
-    @PostConstruct
-    public void startup() {
-        try {
-            // Initiialize the cluster
-            ClusterFactory.getClusterInstance(ClusterType.HAZELCAST);
-        } catch (ClusterException e) {
-            e.printStackTrace();
-        }
-    }
+    private String color;
 
-    @POST
-    @Path("{key}")
-    public void set(@PathParam("key") final String key, final String value) {
-        try {
-            ClusterFactory.getClusterInstance(ClusterType.HAZELCAST).set(key, value);
-        } catch (ClusterException e) {
-            e.printStackTrace();
-        }
+    public ColorService() {
+        this.color = "white";
     }
 
     @GET
-    @Path("{key}")
-    public String get(@PathParam("key") final String key) {
-        try {
-            return ClusterFactory.getClusterInstance(ClusterType.HAZELCAST).get(key);
-        } catch (ClusterException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public String getColor() {
+        return color;
     }
 
+    @Lock(WRITE)
+    @Path("{color}")
+    @POST
+    public void setColor(@PathParam("color") String color) {
+        this.color = color;
+    }
+
+    @Path("object")
+    @GET
+    @Produces({APPLICATION_JSON})
+    public Color getColorObject() {
+        return new Color("orange", 0xE7, 0x71, 0x00);
+    }
 }
