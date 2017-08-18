@@ -1,21 +1,32 @@
 apply plugin: 'war'
 
 group = 'org.superbiz'
-version = '1.0-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 
-description = "TomEE JAXRS starter project"
+description = "TomEE JAX-RS starter project"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-	mavenCentral()        
+  mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'org.apache.openejb', name: 'arquillian-tomee-embedded', version:'1.7.2'
-    testCompile group: 'org.apache.openejb', name: 'tomee-jaxrs', version:'1.7.2'
-    testCompile group: 'junit', name: 'junit', version:'4.12'
-    providedCompile group: 'org.apache.openejb', name: 'javaee-api', version:'6.0-6'
+  providedCompile 'org.apache.tomee:javaee-api:7.0-1'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.jboss.arquillian.junit:arquillian-junit-container:1.1.11.Final'
+  testRuntime 'org.apache.tomee:arquillian-tomee-embedded:7.0.2'
+  // To use the TomEE remote adapter, enable all remaining dependencies in place of the previous one
+  //testRuntime 'org.apache.tomee:arquillian-tomee-remote:7.0.2'
+  //testRuntime 'org.apache.geronimo.specs:geronimo-osgi-locator:1.1'
+  //testRuntime 'org.apache.cxf:cxf-rt-rs-client:3.1.8'
+  //testRuntime 'org.apache.johnzon:johnzon-jaxrs:0.9.5'
+}
+
+test {
+  systemProperties = [
+    'arquillian.launch': 'tomee.embedded'
+    //'arquillian.launch': 'tomee.remote'
+  ]
 }
