@@ -28,19 +28,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>${openejb.javaee.api}</version>
+      <version>${tomee.javaee.api}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>arquillian-tomee-embedded</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>tomee-jaxrs</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
@@ -56,7 +56,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.openejb.maven</groupId>
+        <groupId>org.apache.tomee.maven</groupId>
         <artifactId>tomee-maven-plugin</artifactId>
         <version>${tomee.version}</version>
         <configuration>
@@ -68,8 +68,8 @@
   </build>
 
   <properties>
-    <tomee.version>1.7.2</tomee.version>
-    <openejb.javaee.api>6.0-6</openejb.javaee.api>
+    <tomee.version>7.0.3</tomee.version>
+    <tomee.javaee.api>7.0-1</tomee.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.target>1.7</maven.compiler.target>
