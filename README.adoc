@@ -9,7 +9,7 @@ The only thing better than a Maven archetype is a repo you can fork with everyth
  - Arquillian setup for testing against TomEE JAX-RS Embedded
  - TomEE Maven Plugin for deploying and running our war file
 
-Everything ready-to-run with a simple `maven clean install tomee:run`
+Everything ready-to-run with a simple `mvn clean install tomee:run`
 
 Delete the sample code, replace with your own and you're good to go.
 

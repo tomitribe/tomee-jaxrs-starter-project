@@ -61,14 +61,14 @@
         <version>${tomee.version}</version>
         <configuration>
           <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
+          <tomeeClassifier>webprofile</tomeeClassifier>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <properties>
-    <tomee.version>7.0.3</tomee.version>
+    <tomee.version>7.0.4</tomee.version>
     <tomee.javaee.api>7.0-1</tomee.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
