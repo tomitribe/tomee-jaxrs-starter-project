@@ -92,9 +92,10 @@ public class ColorServiceTest extends Assert {
 
             assertEquals(200, response.getStatus());
 
-            final String content = slurp((InputStream) response.getEntity());
+            final String content = response.readEntity(String.class);
 
             assertEquals("green", content);
+            response.close();
         }
 
     }
@@ -112,21 +113,6 @@ public class ColorServiceTest extends Assert {
         assertEquals(0xE7, color.getR());
         assertEquals(0x71, color.getG());
         assertEquals(0x00, color.getB());
-    }
-
-    /**
-     * Reusable utility method
-     * Move to a shared class or replace with equivalent
-     */
-    public static String slurp(final InputStream in) throws IOException {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[1024];
-        int length;
-        while ((length = in.read(buffer)) != -1) {
-            out.write(buffer, 0, length);
-        }
-        out.flush();
-        return new String(out.toByteArray());
     }
 
 }
