@@ -14,17 +14,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz;
+package org.superbiz.rest;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.superbiz.model.Color;
+import org.superbiz.services.api.ColorTransformService;
+import org.superbiz.services.impl.ColorTransformServiceImpl;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -45,7 +49,7 @@ import java.net.URL;
  *
  */
 @RunWith(Arquillian.class)
-public class ColorServiceTest extends Assert {
+public class ColorResourceTest extends Assert {
 
     /**
      * ShrinkWrap is used to create a war file on the fly.
@@ -58,7 +62,10 @@ public class ColorServiceTest extends Assert {
      */
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(WebArchive.class).addClasses(ColorService.class, Color.class);
+        return ShrinkWrap.create(WebArchive.class).addClasses(ColorResource.class, Color.class,
+                ColorTransformService.class,
+                ColorTransformServiceImpl.class)
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml"); // needed for CDI to work in arquilian test :)
     }
 
     /**
@@ -109,6 +116,22 @@ public class ColorServiceTest extends Assert {
 
         assertNotNull(color);
         assertEquals("orange", color.getName());
+        assertEquals(0xE7, color.getR());
+        assertEquals(0x71, color.getG());
+        assertEquals(0x00, color.getB());
+    }
+
+
+    @Test
+    public void getTransformedColorObject() throws Exception {
+
+        final WebClient webClient = WebClient.create(webappUrl.toURI());
+        webClient.accept(MediaType.APPLICATION_JSON);
+
+        final Color color = webClient.path("color/transform/object").get(Color.class);
+
+        assertNotNull(color);
+        assertEquals("CMYKorange", color.getName());
         assertEquals(0xE7, color.getR());
         assertEquals(0x71, color.getG());
         assertEquals(0x00, color.getB());
