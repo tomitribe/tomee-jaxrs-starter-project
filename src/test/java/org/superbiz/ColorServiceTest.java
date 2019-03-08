@@ -16,7 +16,6 @@
  */
 package org.superbiz;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -26,11 +25,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -79,20 +77,20 @@ public class ColorServiceTest extends Assert {
 
         // POST
         {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color/green").post(null);
+            final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
+            final Response response = webTarget.path("color/green").request().post(null);
 
             assertEquals(204, response.getStatus());
         }
 
         // GET
         {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color").get();
+            final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
+            final Response response = webTarget.path("color").request().get();
 
             assertEquals(200, response.getStatus());
 
-            final String content = slurp((InputStream) response.getEntity());
+            final String content = response.readEntity(String.class);
 
             assertEquals("green", content);
         }
@@ -102,31 +100,17 @@ public class ColorServiceTest extends Assert {
     @Test
     public void getColorObject() throws Exception {
 
-        final WebClient webClient = WebClient.create(webappUrl.toURI());
-        webClient.accept(MediaType.APPLICATION_JSON);
+        final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
 
-        final Color color = webClient.path("color/object").get(Color.class);
+        final Color color = webTarget.path("color/object").request()
+                .accept(MediaType.APPLICATION_JSON)
+                .get(Color.class);
 
         assertNotNull(color);
         assertEquals("orange", color.getName());
         assertEquals(0xE7, color.getR());
         assertEquals(0x71, color.getG());
         assertEquals(0x00, color.getB());
-    }
-
-    /**
-     * Reusable utility method
-     * Move to a shared class or replace with equivalent
-     */
-    public static String slurp(final InputStream in) throws IOException {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[1024];
-        int length;
-        while ((length = in.read(buffer)) != -1) {
-            out.write(buffer, 0, length);
-        }
-        out.flush();
-        return new String(out.toByteArray());
     }
 
 }
