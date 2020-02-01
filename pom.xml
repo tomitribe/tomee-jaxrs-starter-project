@@ -68,7 +68,7 @@
   </build>
 
   <properties>
-    <tomee.version>8.0.0-M2</tomee.version>
+    <tomee.version>8.0.1</tomee.version>
     <tomee.javaee.api>8.0</tomee.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
