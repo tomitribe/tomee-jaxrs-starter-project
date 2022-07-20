@@ -28,19 +28,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>${openejb.javaee.api}</version>
+      <version>${tomee.javaee.api}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>arquillian-tomee-embedded</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>tomee-jaxrs</artifactId>
       <version>${tomee.version}</version>
       <scope>test</scope>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -56,23 +56,23 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.openejb.maven</groupId>
+        <groupId>org.apache.tomee.maven</groupId>
         <artifactId>tomee-maven-plugin</artifactId>
         <version>${tomee.version}</version>
         <configuration>
           <tomeeVersion>${tomee.version}</tomeeVersion>
-          <tomeeClassifier>jaxrs</tomeeClassifier>
+          <tomeeClassifier>webprofile</tomeeClassifier>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
   <properties>
-    <tomee.version>1.7.2</tomee.version>
-    <openejb.javaee.api>6.0-6</openejb.javaee.api>
+    <tomee.version>8.0.6</tomee.version>
+    <tomee.javaee.api>8.0-5</tomee.javaee.api>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failOnMissingWebXml>false</failOnMissingWebXml>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 </project>

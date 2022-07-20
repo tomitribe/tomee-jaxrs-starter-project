@@ -16,7 +16,6 @@
  */
 package org.superbiz.rest;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -30,11 +29,10 @@ import org.superbiz.model.Color;
 import org.superbiz.services.api.ColorTransformService;
 import org.superbiz.services.impl.ColorTransformServiceImpl;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -86,20 +84,20 @@ public class ColorResourceTest extends Assert {
 
         // POST
         {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color/green").post(null);
+            final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
+            final Response response = webTarget.path("color/green").request().post(null);
 
             assertEquals(204, response.getStatus());
         }
 
         // GET
         {
-            final WebClient webClient = WebClient.create(webappUrl.toURI());
-            final Response response = webClient.path("color").get();
+            final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
+            final Response response = webTarget.path("color").request().get();
 
             assertEquals(200, response.getStatus());
 
-            final String content = slurp((InputStream) response.getEntity());
+            final String content = response.readEntity(String.class);
 
             assertEquals("green", content);
         }
@@ -109,10 +107,11 @@ public class ColorResourceTest extends Assert {
     @Test
     public void getColorObject() throws Exception {
 
-        final WebClient webClient = WebClient.create(webappUrl.toURI());
-        webClient.accept(MediaType.APPLICATION_JSON);
+        final WebTarget webTarget = ClientBuilder.newClient().target(webappUrl.toURI());
 
-        final Color color = webClient.path("color/object").get(Color.class);
+        final Color color = webTarget.path("color/object").request()
+                .accept(MediaType.APPLICATION_JSON)
+                .get(Color.class);
 
         assertNotNull(color);
         assertEquals("orange", color.getName());

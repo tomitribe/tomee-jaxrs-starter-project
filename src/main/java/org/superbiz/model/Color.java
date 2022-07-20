@@ -16,9 +16,6 @@
  */
 package org.superbiz.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Color {
 
     private String name;
