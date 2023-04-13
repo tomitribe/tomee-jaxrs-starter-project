@@ -20,3 +20,7 @@ dependencies {
     testImplementation "junit:junit:4.12"
 }
 
+war {
+    rootSpec.exclude("**/javaee-*.jar")
+    rootSpec.exclude("**/geronimo-*spec*.jar")
+}
