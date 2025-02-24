@@ -16,17 +16,17 @@
  */
 package org.superbiz;
 
-import javax.ejb.Lock;
-import javax.ejb.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import jakarta.ejb.Lock;
+import jakarta.ejb.Singleton;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 
-import static javax.ejb.LockType.READ;
-import static javax.ejb.LockType.WRITE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ejb.LockType.READ;
+import static jakarta.ejb.LockType.WRITE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Lock(READ)
 @Singleton

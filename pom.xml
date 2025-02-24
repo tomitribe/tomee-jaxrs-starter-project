@@ -26,11 +26,20 @@
 
   <packaging>war</packaging>
 
+
+  <properties>
+    <tomee.version>10.0.0</tomee.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+  </properties>
+
   <dependencies>
     <dependency>
-      <groupId>org.apache.tomee</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>${tomee.javaee.api}</version>
+      <groupId>org.apache.tomee.bom</groupId>
+      <artifactId>tomee-webprofile-api</artifactId>
+      <version>${tomee.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -40,10 +49,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.tomee</groupId>
-      <artifactId>tomee-jaxrs</artifactId>
+      <groupId>org.apache.tomee.bom</groupId>
+      <artifactId>tomee-webprofile</artifactId>
       <version>${tomee.version}</version>
-      <scope>test</scope>
+      <scope>provided</scope>
+      <exclusions>
+        <!--small pom bug, should be fixed in 10.0.1-->
+        <exclusion>
+          <groupId>org.apache.tomee</groupId>
+          <artifactId>tomee-webapp</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -66,13 +82,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <properties>
-    <tomee.version>8.0.14</tomee.version>
-    <tomee.javaee.api>8.0-5</tomee.javaee.api>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
 </project>
